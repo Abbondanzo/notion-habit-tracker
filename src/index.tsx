@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "semantic-ui-css/semantic.min.css";
+// TODO: https://github.com/Semantic-Org/Semantic-UI-CSS/issues/75
+// import "semantic-ui-css/semantic.min.css";
 import App from "./App";
 import { AuthenticationGate } from "./authentication/components/AuthenticationGate";
 import "./index.css";
