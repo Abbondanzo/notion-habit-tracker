@@ -1,5 +1,5 @@
 {
-  "name": "@pabbo/notion-habit-tracker-server",
+  "name": "@pabbo/nht-server",
   "version": "0.0.1",
   "description": "Server backend for communicating with Notion",
   "main": "index.js",

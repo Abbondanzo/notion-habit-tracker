@@ -14,6 +14,8 @@ const appRouter = router().query("hello", {
   },
 });
 
+export type AppRouter = typeof appRouter;
+
 const createContext = ({}: CreateExpressContextOptions) => ({});
 
 export const main = async () => {
