@@ -5,13 +5,16 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { AuthenticationGate } from "./authentication/components/AuthenticationGate";
 import "./index.css";
+import { TRPCProvider } from "./providers/TRPCProvider";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthenticationGate>
-      <App />
-    </AuthenticationGate>
+    <TRPCProvider>
+      <AuthenticationGate>
+        <App />
+      </AuthenticationGate>
+    </TRPCProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
