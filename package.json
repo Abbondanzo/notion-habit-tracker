@@ -1,0 +1,7 @@
+{
+  "name": "notion-habit-tracker",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
