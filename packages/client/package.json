@@ -1,5 +1,5 @@
 {
-  "name": "notion-habit-tracker",
+  "name": "@pabbo/notion-habit-tracker-client",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
