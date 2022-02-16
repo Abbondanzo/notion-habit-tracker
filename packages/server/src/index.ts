@@ -1,49 +1,39 @@
+import { router } from "@trpc/server";
 import {
-  ApolloServerPluginLandingPageDisabled,
-  ApolloServerPluginLandingPageGraphQLPlayground,
-} from "apollo-server-core";
-import { ApolloServer, gql } from "apollo-server-express";
+  CreateExpressContextOptions,
+  createExpressMiddleware,
+} from "@trpc/server/adapters/express";
 import express from "express";
 import http from "http";
 
 const port = 4000;
 
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "Hello world!",
+const appRouter = router().query("hello", {
+  async resolve() {
+    return { hello: "world" };
   },
-};
+});
+
+const createContext = ({}: CreateExpressContextOptions) => ({});
 
 export const main = async () => {
   const app = express();
   const httpServer = http.createServer(app);
-  const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-    plugins: [
-      ApolloServerPluginLandingPageGraphQLPlayground(),
-      ApolloServerPluginLandingPageDisabled(),
-    ],
-  });
 
-  await apolloServer.start();
-  apolloServer.applyMiddleware({ app });
+  app.use(
+    "/trpc",
+    createExpressMiddleware({
+      router: appRouter,
+      createContext,
+    })
+  );
 
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
-  console.log(
-    `🚀 Server ready at http://localhost:${port}${apolloServer.graphqlPath}`
-  );
+  console.log(`🚀 Server ready at http://localhost:${port}`);
 
   const shutdown = () => {
     console.log("Server shutting down...");
     httpServer.close();
-    apolloServer.stop();
   };
 
   process.on("SIGINT", shutdown);
