@@ -1,4 +1,5 @@
-import { router } from "@trpc/server";
+import { Client } from "@notionhq/client";
+import { inferAsyncReturnType, router, TRPCError } from "@trpc/server";
 import {
   CreateExpressContextOptions,
   createExpressMiddleware,
@@ -6,18 +7,44 @@ import {
 import cors from "cors";
 import express from "express";
 import http from "http";
+import { trpcErrorHandler } from "./utils/trpcErrorHandler";
 
 const port = 4000;
 
-const appRouter = router().query("hello", {
-  async resolve() {
-    return { hello: "world" };
-  },
-});
+const createContext = async ({ req }: CreateExpressContextOptions) => {
+  if (req.headers.authorization) {
+    const client = new Client({ auth: req.headers.authorization });
+    return { client };
+  }
+  return {};
+};
+
+type Context = inferAsyncReturnType<typeof createContext>;
+
+const appRouter = router<Context>()
+  .middleware(async ({ next, ctx }) => {
+    if (!ctx || !ctx.client) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Missing Authorization header",
+      });
+    }
+    return next({ ctx: { ...ctx, client: ctx?.client! } });
+  })
+  .query("hello", {
+    resolve: async ({ ctx }) => {
+      try {
+        const result = await ctx.client.search({
+          query: "Habit Tracker",
+        });
+        return result;
+      } catch (error) {
+        trpcErrorHandler(error);
+      }
+    },
+  });
 
 export type AppRouter = typeof appRouter;
-
-const createContext = ({}: CreateExpressContextOptions) => ({});
 
 export const main = async () => {
   const app = express();
@@ -27,7 +54,7 @@ export const main = async () => {
     cors({
       origin: "*",
       credentials: true,
-      // allowedHeaders: ["Content-Type", "Authorization"],
+      allowedHeaders: ["Content-Type", "Authorization"],
     })
   );
 

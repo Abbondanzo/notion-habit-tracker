@@ -15,12 +15,14 @@ const SAMPLE_CHECKBOXES: Column[] = [
 ];
 
 export const CheckboxRow = () => {
-  const { data, isLoading, error } = trpc.useQuery(["hello"]);
+  const { data, error } = trpc.useQuery(["hello"]);
 
   return (
     <div>
       <p>Requesting some data bb.</p>
-      <p>{error ? error.message : JSON.stringify(data, null, 2)}</p>
+      <p style={{ textAlign: "left", fontSize: 12 }}>
+        <pre>{error ? error.message : JSON.stringify(data, null, 2)}</pre>
+      </p>
     </div>
   );
 };
