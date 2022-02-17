@@ -3,6 +3,7 @@ import {
   CreateExpressContextOptions,
   createExpressMiddleware,
 } from "@trpc/server/adapters/express";
+import cors from "cors";
 import express from "express";
 import http from "http";
 
@@ -21,6 +22,14 @@ const createContext = ({}: CreateExpressContextOptions) => ({});
 export const main = async () => {
   const app = express();
   const httpServer = http.createServer(app);
+
+  app.use(
+    cors({
+      origin: "*",
+      credentials: true,
+      // allowedHeaders: ["Content-Type", "Authorization"],
+    })
+  );
 
   app.use(
     "/trpc",

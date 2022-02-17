@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-import { Grid } from "semantic-ui-react";
-import { useNotionClient } from "../../authentication/hooks/useNotionClient";
-import { CheckboxColumn } from "./CheckboxColumn";
+import { trpc } from "../../http/constants/trpc";
 
 interface Column {
   title: string;
@@ -18,28 +15,12 @@ const SAMPLE_CHECKBOXES: Column[] = [
 ];
 
 export const CheckboxRow = () => {
-  const [db, setDb] = useState<string>();
-  const [error, setError] = useState<any>();
-
-  const client = useNotionClient();
-
-  useEffect(() => {
-    setDb(undefined);
-    setError(undefined);
-    client
-      .search({ filter: { value: "database", property: "object" } })
-      .then((resp) => {
-        setDb(JSON.stringify(resp, null, 2));
-      })
-      .catch((error) => {
-        setError(error && error.message);
-      });
-  }, [client]);
+  const { data, isLoading, error } = trpc.useQuery(["hello"]);
 
   return (
     <div>
       <p>Requesting some data bb.</p>
-      <p>{error ? error : db}</p>
+      <p>{error ? error.message : JSON.stringify(data, null, 2)}</p>
     </div>
   );
 };

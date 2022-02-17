@@ -1,5 +1,4 @@
-import { Client } from "@notionhq/client";
-import { PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren } from "react";
 import styled from "styled-components";
 import { AuthenticationContext } from "../context/AuthenticationContext";
 
@@ -16,11 +15,6 @@ const BlankRoot = styled.div`
 
 export const AuthenticationGate = ({ children }: PropsWithChildren<{}>) => {
   const notionAPIKey = process.env.REACT_APP_NOTION_API_KEY;
-  const notionClient = useMemo(() => {
-    return new Client({
-      auth: notionAPIKey,
-    });
-  }, [notionAPIKey]);
 
   if (!notionAPIKey) {
     return (
@@ -32,7 +26,7 @@ export const AuthenticationGate = ({ children }: PropsWithChildren<{}>) => {
   }
 
   return (
-    <AuthenticationContext.Provider value={{ notionClient }}>
+    <AuthenticationContext.Provider value={{ notionAPIKey }}>
       {children}
     </AuthenticationContext.Provider>
   );

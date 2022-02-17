@@ -1,8 +1,7 @@
-import { Client } from "@notionhq/client";
 import { createContext } from "react";
 
 interface AuthenticationContextVariables {
-  notionClient?: Client;
+  notionAPIKey?: string;
 }
 
 export const AuthenticationContext =
