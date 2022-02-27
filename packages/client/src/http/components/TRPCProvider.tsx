@@ -9,12 +9,12 @@ export const TRPCProvider = ({ children }: PropsWithChildren<{}>) => {
   useEffect(() => {
     apiKeyRef.current = notionAPIKey;
   }, [notionAPIKey]);
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () => new QueryClient({ defaultOptions: { queries: { retry: false } } })
+  );
   const [trpcClient] = useState(() =>
     trpc.createClient({
       url: "http://localhost:4000/trpc",
-
-      // optional
       headers() {
         return {
           authorization: apiKeyRef.current,

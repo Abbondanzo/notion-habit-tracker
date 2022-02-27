@@ -15,8 +15,10 @@ const SAMPLE_CHECKBOXES: Column[] = [
 ];
 
 export const CheckboxRow = () => {
-  const { data, error } = trpc.useQuery(["hello"]);
-
+  const { data, error } = trpc.useQuery([
+    "databases/retrieve",
+    { databaseId: "abc" },
+  ]);
   return (
     <div>
       <p>Requesting some data bb.</p>
