@@ -5,9 +5,6 @@
   "dependencies": {
     "@notionhq/client": "^0.4.13",
     "@pabbo/nht-server": "file:packages/server",
-    "@trpc/client": "^9.18.0",
-    "@trpc/react": "^9.18.0",
-    "@trpc/server": "^9.18.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.34.15",
