@@ -1,4 +1,5 @@
-import { trpc } from "../../http/constants/trpc";
+import { useQuery } from "react-query";
+import { search } from "../../api/search";
 
 interface Column {
   title: string;
@@ -15,10 +16,10 @@ const SAMPLE_CHECKBOXES: Column[] = [
 ];
 
 export const CheckboxRow = () => {
-  const { data, error } = trpc.useQuery([
-    "databases/retrieve",
-    { databaseId: "abc" },
-  ]);
+  const { data, error } = useQuery<any, Error>(["databases/retrieve"], () =>
+    search()
+  );
+
   return (
     <div>
       <p>Requesting some data bb.</p>

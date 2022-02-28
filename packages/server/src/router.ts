@@ -1,35 +1,66 @@
 import { Client } from "@notionhq/client";
-import { inferAsyncReturnType, router, TRPCError } from "@trpc/server";
-import { CreateExpressContextOptions } from "@trpc/server/adapters/express";
-import { z } from "zod";
+import { Request, Response, Router, NextFunction } from "express";
 
-export const createContext = async ({ req }: CreateExpressContextOptions) => {
-  if (req.headers.authorization) {
-    const client = new Client({ auth: req.headers.authorization });
-    return { client };
+const authHeaderMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.headers.authorization) {
+    return res.status(401).send("Missing API token");
   }
+  next();
 };
 
-type Context = inferAsyncReturnType<typeof createContext>;
-type AuthenticatedContext = NonNullable<Context>;
+const getClient = (request: Request) =>
+  new Client({ auth: request.headers.authorization });
 
-const databases = router<AuthenticatedContext>().query("retrieve", {
-  input: z.object({ databaseId: z.string() }),
-  resolve: async ({ ctx, input }) => {
-    return ctx.client.databases.retrieve({ database_id: input.databaseId });
-  },
+const databasesRouter = Router()
+  .get("/retrieve", async (req, res) => {
+    const client = getClient(req);
+    const databaseId = req.query.databaseId;
+    if (!databaseId) {
+      return res.status(400).send("Missing databaseId query parameter");
+    }
+    try {
+      const databases = await client.databases.retrieve({
+        database_id: databaseId as string,
+      });
+      return res.json(databases);
+    } catch (error: any) {
+      console.error(error);
+      return res.status(404).send(error.message);
+    }
+  })
+  .get("/query", async (req, res) => {
+    const client = getClient(req);
+    const databaseId = req.query.databaseId;
+    if (!databaseId) {
+      return res.status(400).send("Missing databaseId query parameter");
+    }
+    try {
+      const databases = await client.databases.query({
+        database_id: databaseId as string,
+      });
+      return res.json(databases);
+    } catch (error: any) {
+      console.error(error);
+      return res.status(404).send(error.message);
+    }
+  });
+
+const searchRouter = Router().get("/", async (req, res) => {
+  const client = getClient(req);
+  try {
+    const search = await client.search({});
+    return res.json(search);
+  } catch (error: any) {
+    console.error(error);
+    return res.status(404).send(error.message);
+  }
 });
 
-export const appRouter = router<Context>()
-  .middleware(async ({ next, ctx }) => {
-    if (!ctx || !ctx.client) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "Missing Authorization header",
-      });
-    }
-    return next({ ctx: { ...ctx, client: ctx?.client! } });
-  })
-  .merge("databases/", databases);
-
-export type AppRouter = typeof appRouter;
+export const appRouter = Router()
+  .use(authHeaderMiddleware)
+  .use("/databases", databasesRouter)
+  .use("/search", searchRouter);
