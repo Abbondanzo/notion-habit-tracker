@@ -1,0 +1,8 @@
+{
+  "name": "@pabbo/nht-shared",
+  "version": "0.0.1",
+  "description": "Shared types and utilities between the server and client",
+  "main": "src/index.ts",
+  "author": "Peter Abbondanzo",
+  "license": "MIT"
+}

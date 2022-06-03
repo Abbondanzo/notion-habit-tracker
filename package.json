@@ -3,5 +3,8 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "serve": "npm run serve -w @pabbo/nht-server"
+  }
 }
