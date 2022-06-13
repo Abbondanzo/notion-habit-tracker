@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "serve": "npm run serve -w @pabbo/nht-server"
+    "start:client": "npm run start -w @pabbo/nht-client",
+    "start:server": "npm run serve -w @pabbo/nht-server"
   }
 }
