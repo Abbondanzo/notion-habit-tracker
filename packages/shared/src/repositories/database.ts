@@ -20,7 +20,7 @@ export class JsonDatabaseRepository implements DatabaseRepository {
     const data = this.reader.read();
     // If databases have not been initialized, write them and exit
     if (!data.databases) {
-      data.databases = [];
+      data.databases = {};
       this.reader.write(data);
       return;
     }
