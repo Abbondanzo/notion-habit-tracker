@@ -4,17 +4,23 @@ import ReactDOM from "react-dom";
 // import "semantic-ui-css/semantic.min.css";
 import App from "./App";
 import { AuthenticationGate } from "./authentication/components/AuthenticationGate";
+import { ConnectionProvider } from "./connection/components/ConnectionProvider";
 import { TRPCProvider } from "./http/components/TRPCProvider";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import { Theme } from "./Theme";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthenticationGate>
-      <TRPCProvider>
-        <App />
-      </TRPCProvider>
-    </AuthenticationGate>
+    <Theme>
+      <ConnectionProvider>
+        <AuthenticationGate>
+          <TRPCProvider>
+            <App />
+          </TRPCProvider>
+        </AuthenticationGate>
+      </ConnectionProvider>
+    </Theme>
   </React.StrictMode>,
   document.getElementById("root")
 );
