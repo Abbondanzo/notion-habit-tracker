@@ -1,10 +1,4 @@
 import { createContext } from "react";
+import { Connection } from "../types/Connection";
 
-export interface ConnectionContextOptions {
-  local: boolean;
-  databaseId: string;
-}
-
-export const ConnectionContext = createContext<ConnectionContextOptions | null>(
-  null
-);
+export const ConnectionContext = createContext<Connection | null>(null);
