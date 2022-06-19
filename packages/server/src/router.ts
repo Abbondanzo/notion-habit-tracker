@@ -1,9 +1,9 @@
-import { FilesystemProvider, NotionProvider, Provider } from "./provider";
-import { isDev } from "./utils/isDev";
 import { Client } from "@notionhq/client";
-import { inferAsyncReturnType, router, TRPCError } from "@trpc/server";
+import { router, TRPCError } from "@trpc/server";
 import { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import { z } from "zod";
+import { FilesystemProvider, NotionProvider, Provider } from "./provider";
+import { isDev } from "./utils/isDev";
 
 interface Context {
   provider: Provider;
