@@ -1,11 +1,11 @@
 import { ReactNode, useMemo } from "react";
-import { LocalConnection } from "../classes/LocalConnection";
-import { RemoteConnection } from "../classes/RemoteConnection";
-import { ConnectionContext } from "../context/ConnectionContext";
-import { useSettings } from "../hooks/useSettings";
-import { isSetupIncomplete } from "../operators/isSetupIncomplete";
-import { Settings } from "../types/Settings";
-import { ConnectionSetup } from "./ConnectionSetup";
+import { LocalConnection } from "../../internal/classes/LocalConnection";
+import { RemoteConnection } from "../../internal/classes/RemoteConnection";
+import { ConnectionSetup } from "../../internal/components/ConnectionSetup";
+import { ConnectionContext } from "../../internal/context/ConnectionContext";
+import { useSettings } from "../../internal/hooks/useSettings";
+import { isSetupIncomplete } from "../../internal/operators/isSetupIncomplete";
+import { Settings } from "../../internal/types/Settings";
 
 interface ConnectionWithSettingsProps {
   children: ReactNode;

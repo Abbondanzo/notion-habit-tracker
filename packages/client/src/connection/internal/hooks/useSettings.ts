@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Settings } from "../types/Settings";
 import { LocalStorageObserver } from "../classes/LocalStorageObserver";
+import { Settings } from "../types/Settings";
 
 const SETTINGS_KEY = "NHT_SETTINGS";
 const settingsObserver = new LocalStorageObserver<Settings>(SETTINGS_KEY);

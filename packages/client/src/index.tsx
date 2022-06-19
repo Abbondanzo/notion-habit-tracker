@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 // TODO: https://github.com/Semantic-Org/Semantic-UI-CSS/issues/75
 // import "semantic-ui-css/semantic.min.css";
 import App from "./App";
-import { ConnectionProvider } from "./connection/components/ConnectionProvider";
+import { ConnectionProvider } from "./connection/public/components/ConnectionProvider";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { Theme } from "./Theme";

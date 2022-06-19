@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button } from "../../shared/components/Button";
+import { Button } from "../../../shared/components/Button";
 import { useConnectionSetup } from "../hooks/useConnectionSetup";
 import { Settings } from "../types/Settings";
 

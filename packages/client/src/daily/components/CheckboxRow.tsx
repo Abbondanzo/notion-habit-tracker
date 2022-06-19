@@ -1,4 +1,4 @@
-import { trpc } from "../../http/constants/trpc";
+import { trpc } from "../../connection/internal/constants/trpc";
 
 interface Column {
   title: string;
@@ -16,14 +16,24 @@ const SAMPLE_CHECKBOXES: Column[] = [
 
 export const CheckboxRow = () => {
   const { data, error } = trpc.useQuery([
-    "databases/retrieve",
+    "databases/getDatabase",
     { databaseId: "abc" },
+  ]);
+  const { data: databases, error: databasesError } = trpc.useQuery([
+    "databases/getDatabases",
   ]);
   return (
     <div>
       <p>Requesting some data bb.</p>
       <p style={{ textAlign: "left", fontSize: 12 }}>
         <pre>{error ? error.message : JSON.stringify(data, null, 2)}</pre>
+      </p>
+      <p style={{ textAlign: "left", fontSize: 12 }}>
+        <pre>
+          {databasesError
+            ? databasesError.message
+            : JSON.stringify(databases, null, 2)}
+        </pre>
       </p>
     </div>
   );
