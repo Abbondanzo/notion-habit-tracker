@@ -1,4 +1,6 @@
 import { trpc } from "../../connection/internal/constants/trpc";
+import { useDatabase } from "../../connection/public/hooks/useDatabase";
+import { useDatabases } from "../../connection/public/hooks/useDatabases";
 
 interface Column {
   title: string;
@@ -15,13 +17,8 @@ const SAMPLE_CHECKBOXES: Column[] = [
 ];
 
 export const CheckboxRow = () => {
-  const { data, error } = trpc.useQuery([
-    "databases/getDatabase",
-    { databaseId: "abc" },
-  ]);
-  const { data: databases, error: databasesError } = trpc.useQuery([
-    "databases/getDatabases",
-  ]);
+  const { data, error } = useDatabase("abc");
+  const { data: databases, error: databasesError } = useDatabases();
   return (
     <div>
       <p>Requesting some data bb.</p>

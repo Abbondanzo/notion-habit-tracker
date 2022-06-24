@@ -19,7 +19,7 @@ export const main = async () => {
     })
   );
 
-  app.use("/api", appRouter);
+  app.use("/api", appRouter as any);
 
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
   console.log(`🚀 Server ready at http://localhost:${port}`);
