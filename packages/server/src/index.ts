@@ -1,7 +1,8 @@
+import * as trpcExpress from "@trpc/server/adapters/express";
 import cors from "cors";
 import express from "express";
 import http from "http";
-import { appRouter } from "./router";
+import { appRouter, createContext } from "./router";
 
 const port = 4000;
 
@@ -19,7 +20,13 @@ export const main = async () => {
     })
   );
 
-  app.use("/api", appRouter as any);
+  app.use(
+    "/api",
+    trpcExpress.createExpressMiddleware({
+      router: appRouter,
+      createContext,
+    })
+  );
 
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
   console.log(`🚀 Server ready at http://localhost:${port}`);
