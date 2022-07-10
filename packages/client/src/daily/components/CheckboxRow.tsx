@@ -1,4 +1,3 @@
-import { trpc } from "../../connection/internal/constants/trpc";
 import { useDatabase } from "../../connection/public/hooks/useDatabase";
 import { useDatabases } from "../../connection/public/hooks/useDatabases";
 

@@ -1,15 +1,19 @@
+import type { AppRouter } from "@pabbo/nht-server";
 import { Database, DatabaseRepository } from "@pabbo/nht-shared";
-import { trpc } from "../constants/trpc";
+import { createTRPCClient } from "@trpc/client";
 import { Connection } from "../types/Connection";
 import { Settings } from "../types/Settings";
 
-type RemoteClient = ReturnType<typeof trpc.createClient>;
+class RemoteClientTypeHelper {
+  ReturnType = createTRPCClient<AppRouter>({} as any);
+}
+type RemoteClient = RemoteClientTypeHelper["ReturnType"];
 
 class RemoteDatabaseRepository implements DatabaseRepository {
   private readonly trpcClient: RemoteClient;
 
   constructor(authorizationHeader: string) {
-    this.trpcClient = trpc.createClient({
+    this.trpcClient = createTRPCClient<AppRouter>({
       url: "http://localhost:4000/trpc",
       headers() {
         return {
