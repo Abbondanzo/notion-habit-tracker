@@ -1,3 +1,16 @@
-# Notion Habit Tracker
+# notion_habit_tracker
 
-A simple React application that hooks directly into a [Notion](https://www.notion.so/) database and tracks your daily habits.
+A simple Flutter application that hooks directly into a [Notion](https://www.notion.so/) database and tracks your daily habits.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
