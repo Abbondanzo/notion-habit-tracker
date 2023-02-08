@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:notion_habit_tracker/blocs/calendar/calendar.dart';
+import 'package:notion_habit_tracker/models/models.dart';
 import 'package:notion_habit_tracker/repositories/repositories.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -15,13 +16,18 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   Future<void> _onLoadCalendar(
       LoadCalendar event, Emitter<CalendarState> emit) async {
     final calendarStream = _calendarRepository.getCalendar(event.calendarId);
-    final entryStream = _entryRepository.getEntries(event.calendarId);
-    final stream =
-        CombineLatestStream.combine2(calendarStream, entryStream, (a, b) {
-      if (a == null) {
-        return NoCalendarFound();
+    final stream = calendarStream.flatMap((calendar) {
+      if (calendar == null) {
+        return Stream.value(NoCalendarFound());
       }
-      return CalendarLoaded(a, b);
+      return _entryRepository.getEntries(calendar.entries).map((entries) {
+        final List<Entry> nonNullEntries = entries.asMap().entries.map((e) {
+          if (e.value != null) return e.value!;
+          final key = calendar.entries[e.key];
+          return Entry(id: key, habits: calendar.formats);
+        }).toList();
+        return CalendarLoaded(calendar, nonNullEntries);
+      });
     });
     await emit.forEach(
       stream,

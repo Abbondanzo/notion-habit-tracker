@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:notion_habit_tracker/data/keys.dart';
 import 'package:notion_habit_tracker/models/calendar.dart';
-import 'package:notion_habit_tracker/repositories/repositories.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import './calendar_repository.dart';
 
 class LocalCalendarRepository implements CalendarRepository {
   LocalCalendarRepository({
