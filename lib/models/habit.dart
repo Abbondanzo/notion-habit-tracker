@@ -45,9 +45,6 @@ class NumberHabit extends Habit {
     type = HabitType.number;
   }
 
-  @override
-  List<Object?> get props => [number];
-
   /// Deserializes the given JSON into a [NumberHabit].
   static NumberHabit fromJson(Map<String, dynamic> json) =>
       _$NumberHabitFromJson(json);
