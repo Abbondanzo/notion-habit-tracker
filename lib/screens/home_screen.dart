@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notion_habit_tracker/blocs/blocs.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +15,10 @@ class HomeScreen extends StatelessWidget {
           BlocBuilder<CalendarBloc, CalendarState>(builder: (context, state) {
         if (state is NoCalendarFound) {
           return const Text("No calendar found");
+        } else if (state is CalendarLoading) {
+          return const Text("Loading...");
+        } else if (state is CalendarLoadFailed) {
+          return const Text("Failed to load calendars");
         } else {
           return const Text("Woop, a calendar");
         }
