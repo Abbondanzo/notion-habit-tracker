@@ -18,9 +18,17 @@ abstract class Habit {
         return NumberHabit.fromJson(json);
     }
   }
+
+  static List<Map<String, dynamic>> habitsToJson(List<Habit> value) {
+    return value.map((habit) => habit.toJson()).toList();
+  }
+
+  static List<Habit> habitsFromJson(List<Map<String, dynamic>> value) {
+    return value.map((json) => Habit.fromJson(json)).toList();
+  }
 }
 
-@JsonSerializable(createToJson: true)
+@JsonSerializable()
 class CheckboxHabit extends Habit {
   final bool checked;
 
@@ -37,7 +45,7 @@ class CheckboxHabit extends Habit {
   Map<String, dynamic> toJson() => _$CheckboxHabitToJson(this);
 }
 
-@JsonSerializable(createToJson: true)
+@JsonSerializable()
 class NumberHabit extends Habit {
   final int number;
 

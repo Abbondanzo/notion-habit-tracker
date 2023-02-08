@@ -8,12 +8,16 @@ part of 'calendar.dart';
 
 Calendar _$CalendarFromJson(Map<String, dynamic> json) => Calendar(
       json['id'] as String,
-      (json['formats'] as List<dynamic>)
-          .map((e) => HabitTemplate.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      DateTime.parse(json['startAt'] as String),
+      json['numDays'] as int,
+      Habit.habitsFromJson(json['formats'] as List<Map<String, dynamic>>),
+      (json['entries'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$CalendarToJson(Calendar instance) => <String, dynamic>{
       'id': instance.id,
-      'formats': instance.formats,
+      'startAt': instance.startAt.toIso8601String(),
+      'numDays': instance.numDays,
+      'formats': Habit.habitsToJson(instance.formats),
+      'entries': instance.entries,
     };
