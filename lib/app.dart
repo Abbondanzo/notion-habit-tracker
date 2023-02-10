@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notion_habit_tracker/blocs/calendar/calendar.dart';
+import 'package:notion_habit_tracker/cubits/cubits.dart';
 import 'package:notion_habit_tracker/repositories/repositories.dart';
 import 'package:notion_habit_tracker/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,14 +54,20 @@ class ProvidedApp extends StatelessWidget {
     final calendarRepository = LocalCalendarRepository(plugin: plugin);
     final entryRepository = LocalEntryRepository(plugin: plugin);
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<CalendarBloc>(
-          create: (context) =>
-              CalendarBloc(calendarRepository, entryRepository),
-        )
-      ],
-      child: HomeScreen(),
-    );
+    return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider.value(value: calendarRepository),
+          RepositoryProvider.value(value: entryRepository)
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<CalendarBloc>(
+              create: (context) =>
+                  CalendarBloc(calendarRepository, entryRepository),
+            ),
+            BlocProvider.value(value: CurrentCalendarCubit(calendarRepository))
+          ],
+          child: HomeScreen(),
+        ));
   }
 }

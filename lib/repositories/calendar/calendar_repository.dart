@@ -6,4 +6,8 @@ abstract class CalendarRepository {
   Stream<Calendar?> getCalendar(String calendarId);
 
   Future<void> saveCalendar(Calendar calendar);
+
+  Future<Calendar?> getCurrentCalendar();
+
+  Future<void> saveCurrentCalendar(String calendarId);
 }

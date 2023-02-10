@@ -15,7 +15,9 @@ class LocalCalendarRepository implements CalendarRepository {
   }
 
   final SharedPreferences _plugin;
-  final String _key = AppKeys.calendarLocalStorageKey.toString();
+  final String _calendarsKey = AppKeys.calendarLocalStorageKey.toString();
+  final String _currentCalendarKey =
+      AppKeys.currentCalendarLocalStorageKey.toString();
 
   final _streamController = BehaviorSubject<Map<String, Calendar>>.seeded({});
 
@@ -25,7 +27,7 @@ class LocalCalendarRepository implements CalendarRepository {
       _plugin.setString(key, value);
 
   void _init() {
-    final calendarsJson = _getValue(_key);
+    final calendarsJson = _getValue(_calendarsKey);
     if (calendarsJson != null) {
       final calendars = Map<String, dynamic>.from(
         json.decode(calendarsJson),
@@ -56,6 +58,19 @@ class LocalCalendarRepository implements CalendarRepository {
     final calendarMap = Map<String, Calendar>.from(_streamController.value);
     calendarMap[calendar.id] = calendar;
     _streamController.add(calendarMap);
-    return _setValue(_key, json.encode(calendarMap));
+    return _setValue(_calendarsKey, json.encode(calendarMap));
+  }
+
+  @override
+  Future<Calendar?> getCurrentCalendar() async {
+    final calendarMap = Map<String, Calendar>.from(_streamController.value);
+    final currentCalendarId = _getValue(_currentCalendarKey);
+    if (currentCalendarId == null) return null;
+    return calendarMap[currentCalendarId];
+  }
+
+  @override
+  Future<void> saveCurrentCalendar(String calendarId) async {
+    _setValue(_currentCalendarKey, calendarId);
   }
 }
