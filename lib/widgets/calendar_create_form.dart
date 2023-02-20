@@ -17,6 +17,7 @@ class _CalendarCreateFormState extends State<CalendarCreateForm> {
   final _startDateInputController = TextEditingController();
   late Date _startDate;
   final _numberDaysInputController = TextEditingController(text: "75");
+  bool _canSubmit = true;
 
   @override
   void initState() {
@@ -24,6 +25,11 @@ class _CalendarCreateFormState extends State<CalendarCreateForm> {
     final today = DateTime.now();
     _startDate = Date(today.year, today.month, today.day);
     _startDateInputController.text = _startDate.toLocaleString();
+
+    // I wish I could derive state from controllers, but alas
+    _updateState();
+    _startDateInputController.addListener(_updateState);
+    _numberDaysInputController.addListener(_updateState);
   }
 
   @override
@@ -35,6 +41,9 @@ class _CalendarCreateFormState extends State<CalendarCreateForm> {
 
   @override
   Widget build(BuildContext context) {
+    final isFormSubmittable = _startDateInputController.text.isNotEmpty &&
+        _numberDaysInputController.text.isNotEmpty;
+
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         width: 400,
@@ -102,8 +111,12 @@ class _CalendarCreateFormState extends State<CalendarCreateForm> {
                     )
                   ],
                 ),
+                const SizedBox(
+                  height: 20.0,
+                ),
                 ElevatedButton(
-                    onPressed: () => _submit(), child: const Text("Save"))
+                    onPressed: _canSubmit ? () => _submit() : null,
+                    child: const Text("Next"))
               ],
             )));
   }
@@ -121,6 +134,17 @@ class _CalendarCreateFormState extends State<CalendarCreateForm> {
         _startDateInputController.text = _startDate.toLocaleString();
       });
     }
+  }
+
+  void _updateState() {
+    setState(() {
+      // On the first render, _formKey is null
+      final formValid =
+          _formKey.currentState == null || _formKey.currentState!.validate();
+      _canSubmit = _startDateInputController.text.isNotEmpty &&
+          _numberDaysInputController.text.isNotEmpty &&
+          formValid;
+    });
   }
 
   void _submit() {

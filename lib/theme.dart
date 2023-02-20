@@ -22,6 +22,7 @@ final theme = ThemeData(
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
+            minimumSize: MaterialStateProperty.all(const Size.fromHeight(50)),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     borderRadius:
