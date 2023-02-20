@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notion_habit_tracker/cubits/cubits.dart';
+import 'package:notion_habit_tracker/widgets/calendar_create_form.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,7 +16,7 @@ class HomeScreen extends StatelessWidget {
           BlocBuilder<CurrentCalendarCubit, CurrentCalendarState>(
               builder: (context, state) {
         if (state is CurrentCalendarEmpty) {
-          return const Text("No calendar found");
+          return _currentCalendarEmpty();
         } else if (state is CurrentCalendarLoading) {
           return const Text("Loading...");
         } else if (state is CurrentCalendarFailed) {
@@ -25,5 +26,9 @@ class HomeScreen extends StatelessWidget {
         }
       })),
     );
+  }
+
+  Widget _currentCalendarEmpty() {
+    return const CalendarCreateForm();
   }
 }

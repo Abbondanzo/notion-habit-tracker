@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+import './date.dart';
 import './habit.dart';
 
 part 'calendar.g.dart';
@@ -10,7 +11,8 @@ part 'calendar.g.dart';
 @JsonSerializable()
 class Calendar extends Equatable {
   final String id;
-  final DateTime startAt;
+  @DateJsonConverter()
+  final Date startAt;
   final int numDays;
   @JsonKey(
     toJson: Habit.habitsToJson,

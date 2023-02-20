@@ -6,6 +6,8 @@ import 'package:notion_habit_tracker/repositories/repositories.dart';
 import 'package:notion_habit_tracker/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import './theme.dart';
+
 class ProviderApp extends StatefulWidget {
   const ProviderApp({super.key});
 
@@ -35,9 +37,7 @@ class _ProviderAppState extends State<ProviderApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Habit Tracker',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: theme,
         home: plugin == null
             ? const Center(child: CircularProgressIndicator())
             : ProvidedApp(plugin!));
